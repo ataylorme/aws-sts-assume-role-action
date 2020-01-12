@@ -1,0 +1,25 @@
+name: "AWS STS Assume Role Action"
+description: "A GitHub Action calls AWS STS Assume Role and returns the resulting `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_SESSION_TOKEN` as GitHub Actions output."
+inputs:
+  aws-region:
+    description: "The AWS region to use"
+    required: true
+  aws-access-key-id:
+    description: "The `AWS_ACCESS_KEY_ID` to use"
+    required: true
+  aws-secret-access-key:
+    description: "The `AWS_SECRET_ACCESS_KEY` to use"
+    required: true
+  aws-arn-role:
+    description: "The ARN value of the role to assume"
+    required: true
+  duration-seconds:
+    description: "The duration, in seconds, the temporary credentials are valid for"
+    required: false
+    default: "900"
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: "check-circle"
+  color: "yellow"
