@@ -8668,7 +8668,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/camelcase */
 const fs_1 = __importDefault(__webpack_require__(747));
-const path_1 = __importDefault(__webpack_require__(622));
 const sts_1 = __importDefault(__webpack_require__(733));
 const core = __importStar(__webpack_require__(470));
 const getSTS = () => {
@@ -8678,7 +8677,7 @@ const getSTS = () => {
     const arnRole = core.getInput('aws-arn-role', { required: true });
     const durationSeconds = parseInt(core.getInput('duration-seconds', { required: false }));
     const writeCredentialsFile = 'false' !== core.getInput('write-credentials-file', { required: false });
-    const credentialsFilePath = path_1.default.resolve(core.getInput('credentials-file-path', { required: false }));
+    const credentialsFilePath = core.getInput('credentials-file-path', { required: false });
     // Setup credentials as environment variables
     // @link https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html
     process.env.AWS_ACCESS_KEY_ID = accessKeyID;

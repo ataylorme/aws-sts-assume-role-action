@@ -24,7 +24,7 @@ inputs:
   credentials-file-path:
     description: "Path to the credentials config file to create"
     required: false
-    default: "~/.aws/credentials"
+    default: "$HOME/.aws/credentials"
 runs:
   using: "node12"
   main: "dist/index.js"
