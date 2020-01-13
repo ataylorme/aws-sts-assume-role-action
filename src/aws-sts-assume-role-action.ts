@@ -13,7 +13,8 @@ const getSTS = (): void => {
   const arnRole = core.getInput('aws-arn-role', { required: true });
   const durationSeconds = parseInt(core.getInput('duration-seconds', { required: false }));
   const writeCredentialsFile = 'false' !== core.getInput('write-credentials-file', { required: false });
-  const credentialsFilePath = path.resolve(`~`, '.aws/credentials');
+  const homeDir = undefined !== process.env.HOME ? process.env.HOME : '~';
+  const credentialsFilePath = path.normalize(`${homeDir}/.aws/credentials`);
 
   // Setup credentials as environment variables
   // @link https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html
