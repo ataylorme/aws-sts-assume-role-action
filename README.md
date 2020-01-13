@@ -15,8 +15,7 @@ This action takes the following inputs:
 - `aws-arn-role`: the ARN value of the role to assume
 
 **Optional**
-- `write-credentials-file`: whether or not to write the STS credentials to disk. Defaults to `false`
-- `credentials-file-path`: path to the credentials config file to create. Defaults to `~/.aws/credentials`
+- `write-credentials-file`: whether or not to write the STS credentials to `~/.aws/credentials`. Defaults to `false`
 
 ## Outputs
 

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import STS from 'aws-sdk/clients/sts';
+import touch from 'touch';
 import * as core from '@actions/core';
 
 const getSTS = (): void => {
@@ -12,7 +13,7 @@ const getSTS = (): void => {
   const arnRole = core.getInput('aws-arn-role', { required: true });
   const durationSeconds = parseInt(core.getInput('duration-seconds', { required: false }));
   const writeCredentialsFile = 'false' !== core.getInput('write-credentials-file', { required: false });
-  const credentialsFilePath = core.getInput('credentials-file-path', { required: false });
+  const credentialsFilePath = path.resolve(`~`, '.aws/credentials');
 
   // Setup credentials as environment variables
   // @link https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html
@@ -55,6 +56,7 @@ const getSTS = (): void => {
             credentialFileContent += `\naws_access_key_id=${accessParams.AWS_ACCESS_KEY_ID}`;
             credentialFileContent += `\naws_secret_access_key=${accessParams.AWS_SECRET_ACCESS_KEY}`;
             credentialFileContent += `\naws_session_token=${accessParams.AWS_SESSION_TOKEN}`;
+            touch.sync(credentialsFilePath);
             fs.writeFileSync(credentialsFilePath, credentialFileContent);
           } catch (error) {
             core.error(error);

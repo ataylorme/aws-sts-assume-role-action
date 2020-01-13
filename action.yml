@@ -21,10 +21,6 @@ inputs:
     description: "Whether or not to write the STS credentials to disk"
     required: false
     default: "false"
-  credentials-file-path:
-    description: "Path to the credentials config file to create"
-    required: false
-    default: "$HOME/.aws/credentials"
 runs:
   using: "node12"
   main: "dist/index.js"
