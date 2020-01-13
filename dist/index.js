@@ -8667,6 +8667,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/camelcase */
+const fs_1 = __importDefault(__webpack_require__(747));
+const path_1 = __importDefault(__webpack_require__(622));
 const sts_1 = __importDefault(__webpack_require__(733));
 const core = __importStar(__webpack_require__(470));
 const getSTS = () => {
@@ -8675,6 +8677,8 @@ const getSTS = () => {
     const secretAccessKey = core.getInput('aws-secret-access-key', { required: true });
     const arnRole = core.getInput('aws-arn-role', { required: true });
     const durationSeconds = parseInt(core.getInput('duration-seconds', { required: false }));
+    const writeCredentialsFile = 'false' !== core.getInput('write-credentials-file', { required: false });
+    const credentialsFilePath = path_1.default.resolve(core.getInput('credentials-file-path', { required: false }));
     // Setup credentials as environment variables
     // @link https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html
     process.env.AWS_ACCESS_KEY_ID = accessKeyID;
@@ -8708,6 +8712,19 @@ const getSTS = () => {
                     process.env[key] = value;
                     core.setOutput(key, value);
                 });
+                if (writeCredentialsFile) {
+                    try {
+                        let credentialFileContent = '[default]';
+                        credentialFileContent += `\naws_access_key_id=${accessParams.AWS_ACCESS_KEY_ID}`;
+                        credentialFileContent += `\naws_secret_access_key=${accessParams.AWS_SECRET_ACCESS_KEY}`;
+                        credentialFileContent += `\naws_session_token=${accessParams.AWS_SESSION_TOKEN}`;
+                        fs_1.default.writeFileSync(credentialsFilePath, credentialFileContent);
+                    }
+                    catch (error) {
+                        core.error(error);
+                        core.setFailed(`Error writing credentials file to ${credentialsFilePath}.`);
+                    }
+                }
             }
         });
     }

@@ -17,6 +17,14 @@ inputs:
     description: "The duration, in seconds, the temporary credentials are valid for"
     required: false
     default: "900"
+  write-credentials-file:
+    description: "Whether or not to write the STS credentials to disk"
+    required: false
+    default: "false"
+  credentials-file-path:
+    description: "Path to the credentials config file to create"
+    required: false
+    default: "~/.aws/credentials"
 runs:
   using: "node12"
   main: "dist/index.js"

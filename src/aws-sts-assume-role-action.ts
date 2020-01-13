@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import fs from 'fs';
+import path from 'path';
+
 import STS from 'aws-sdk/clients/sts';
 import * as core from '@actions/core';
 
@@ -8,6 +11,8 @@ const getSTS = (): void => {
   const secretAccessKey = core.getInput('aws-secret-access-key', { required: true });
   const arnRole = core.getInput('aws-arn-role', { required: true });
   const durationSeconds = parseInt(core.getInput('duration-seconds', { required: false }));
+  const writeCredentialsFile = 'false' !== core.getInput('write-credentials-file', { required: false });
+  const credentialsFilePath = path.resolve(core.getInput('credentials-file-path', { required: false }));
 
   // Setup credentials as environment variables
   // @link https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html
@@ -44,6 +49,18 @@ const getSTS = (): void => {
           process.env[key] = value;
           core.setOutput(key, value);
         });
+        if (writeCredentialsFile) {
+          try {
+            let credentialFileContent = '[default]';
+            credentialFileContent += `\naws_access_key_id=${accessParams.AWS_ACCESS_KEY_ID}`;
+            credentialFileContent += `\naws_secret_access_key=${accessParams.AWS_SECRET_ACCESS_KEY}`;
+            credentialFileContent += `\naws_session_token=${accessParams.AWS_SESSION_TOKEN}`;
+            fs.writeFileSync(credentialsFilePath, credentialFileContent);
+          } catch (error) {
+            core.error(error);
+            core.setFailed(`Error writing credentials file to ${credentialsFilePath}.`);
+          }
+        }
       }
     });
   } catch (error) {

@@ -6,11 +6,17 @@ A GitHub Action that calls [AWS STS Assume Role](https://docs.aws.amazon.com/AWS
 
 ## Inputs
 
-This action takes four inputs, all of which are **required**:
+This action takes the following inputs:
+
+**Required**
 - `aws-region`: the AWS region to use
 - `aws-access-key-id`: the `AWS_ACCESS_KEY_ID` to use
 - `aws-secret-access-key`: the `AWS_SECRET_ACCESS_KEY` to use
 - `aws-arn-role`: the ARN value of the role to assume
+
+**Optional**
+- `write-credentials-file`: whether or not to write the STS credentials to disk. Defaults to `false`
+- `credentials-file-path`: path to the credentials config file to create. Defaults to `~/.aws/credentials`
 
 ## Outputs
 

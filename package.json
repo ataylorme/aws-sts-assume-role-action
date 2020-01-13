@@ -7,6 +7,7 @@
     "build": "rimraf lib dist && tsc",
     "postbuild": "ncc build lib/aws-sts-assume-role-action.js",
     "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
     "lint:report": "eslint --ext .ts --output-file eslint_report.json --format json src"
   },
   "repository": {
